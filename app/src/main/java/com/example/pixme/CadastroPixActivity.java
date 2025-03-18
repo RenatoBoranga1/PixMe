@@ -1,5 +1,6 @@
 package com.example.pixme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ public class CadastroPixActivity extends AppCompatActivity {
     private Spinner spinnerTipoChave;
     private EditText editChavePix;
     private Button btnSalvarChave;
+    private Button btnVoltarMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class CadastroPixActivity extends AppCompatActivity {
         spinnerTipoChave = findViewById(R.id.spinner_tipo_chave);
         editChavePix = findViewById(R.id.edit_chave_pix);
         btnSalvarChave = findViewById(R.id.btn_salvar_chave);
+        btnVoltarMain = findViewById(R.id.btn_voltar_main);
 
         // Configurar o Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -42,6 +45,16 @@ public class CadastroPixActivity extends AppCompatActivity {
 
                 // Aqui você pode adicionar a lógica para salvar a chave Pix
                 Toast.makeText(CadastroPixActivity.this, "Chave Pix salva: " + tipoChave + " - " + chavePix, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnVoltarMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Retorna para a MainActivity
+                Intent intent = new Intent(CadastroPixActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Finaliza a CadastroPixActivity
             }
         });
     }
