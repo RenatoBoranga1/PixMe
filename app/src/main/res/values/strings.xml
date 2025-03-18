@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Pix Me</string>
+   
+   
+    <string-array name="tipos_chave_pix">
+    <item>Telefone</item>
+    <item>E-mail</item>
+    <item>CPF</item>
+    <item>CNPJ</item>
+</string-array>
 </resources>

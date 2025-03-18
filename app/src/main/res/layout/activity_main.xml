@@ -6,13 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/btn_cadastrar_pix"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/btn_cadastrar_pix"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pix Me"
+        android:text="Cadastrar Chave Pix"
+        app:layout_constraintBottom_toTopOf="@+id/btn_compartilhar_pix"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
+
+    <Button
+        android:id="@+id/btn_compartilhar_pix"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Compartilhar Chave Pix"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_cadastrar_pix"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
