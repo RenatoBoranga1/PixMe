@@ -17,10 +17,6 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.PixMe">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -30,6 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CadastroPixActivity"
+            android:exported="false"/>
+        <activity android:name=".CompartilharPixActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
