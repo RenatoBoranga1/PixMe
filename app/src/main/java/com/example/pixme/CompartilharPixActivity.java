@@ -22,13 +22,15 @@ import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.google.zxing.WriterException;
-
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
+//import com.google.zxing.WriterException;
+//
+//import androidmads.library.qrgenearator.QRGContents;
+//import androidmads.library.qrgenearator.QRGEncoder;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -36,7 +38,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 
-public class CompartilharPixActivity extends AppCompatActivity implements NfcAdapter.CreateNdefMessageCallback {
+public class CompartilharPixActivity extends AppCompatActivity implements NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
 
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
@@ -68,7 +70,9 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
         if (nfcAdapter == null) {
             Toast.makeText(this, "NFC não suportado", Toast.LENGTH_SHORT).show();
         } else {
-            nfcAdapter.setNdefPushMessageCallback(this, this);
+            // Linha comentada para evitar o erro de compilação
+            // nfcAdapter.setNdefPushMessageCallback(this, this);
+            Toast.makeText(this, "Funcionalidade NFC comentada", Toast.LENGTH_SHORT).show();
         }
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -78,7 +82,9 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
 
         btnNfc.setOnClickListener(v -> {
             if (nfcAdapter != null) {
-                Toast.makeText(CompartilharPixActivity.this, "Aproxime os dispositivos para compartilhar via NFC", Toast.LENGTH_SHORT).show();
+                // Linha comentada para evitar o erro de compilação
+                // Toast.makeText(CompartilharPixActivity.this, "Aproxime os dispositivos para compartilhar via NFC", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompartilharPixActivity.this, "Funcionalidade NFC comentada", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(CompartilharPixActivity.this, "NFC não suportado", Toast.LENGTH_SHORT).show();
             }
@@ -86,7 +92,11 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
 
         btnBluetooth.setOnClickListener(v -> conectarBluetooth());
 
-        btnQrCode.setOnClickListener(v -> gerarQRCode());
+        btnQrCode.setOnClickListener(v -> {
+            // Parte do QR Code comentada
+            //gerarQRCode();
+            Toast.makeText(this, "Funcionalidade de QR Code comentada", Toast.LENGTH_SHORT).show();
+        });
 
         btnVoltarMain.setOnClickListener(v -> {
             Intent intent = new Intent(CompartilharPixActivity.this, MainActivity.class);
@@ -103,6 +113,9 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
                     deviceList = peers;
                     Toast.makeText(CompartilharPixActivity.this, "Dispositivos encontrados: " + deviceList.getDeviceList().size(), Toast.LENGTH_SHORT).show();
                     // Adicione aqui a lógica para exibir a lista de dispositivos e permitir a seleção
+                    if(deviceList.getDeviceList().size() > 0){
+                        conectar(deviceList.getDeviceList().iterator().next());
+                    }
                 });
             }
 
@@ -122,6 +135,7 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
             public void onSuccess() {
                 Toast.makeText(CompartilharPixActivity.this, "Conectado ao dispositivo", Toast.LENGTH_SHORT).show();
                 // Adicione aqui a lógica para transferir a chave Pix via Wi-Fi Direct
+                transferirPixWifiDirect();
             }
 
             @Override
@@ -131,13 +145,37 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
         });
     }
 
+    private void transferirPixWifiDirect() {
+        new Thread(() -> {
+            try {
+                ServerSocket serverSocket = new ServerSocket(8888);
+                Socket client = serverSocket.accept();
+                OutputStream outputStream = client.getOutputStream();
+                outputStream.write(chavePix.getBytes());
+                outputStream.close();
+                client.close();
+                serverSocket.close();
+                runOnUiThread(() -> Toast.makeText(CompartilharPixActivity.this, "Chave Pix enviada via Wi-Fi Direct", Toast.LENGTH_SHORT).show());
+            } catch (IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(CompartilharPixActivity.this, "Falha ao enviar chave Pix via Wi-Fi Direct", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
     @Override
     public NdefMessage createNdefMessage(NfcEvent event) {
         NdefRecord ndefRecord = NdefRecord.createTextRecord("en", chavePix);
         return new NdefMessage(ndefRecord);
     }
 
+    @Override
+    public void onNdefPushComplete(NfcEvent event) {
+        // Implemente a ação após a conclusão do envio NFC, se necessário
+    }
+
     private void gerarQRCode() {
+        /* Parte do QR Code comentada
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
@@ -154,7 +192,7 @@ public class CompartilharPixActivity extends AppCompatActivity implements NfcAda
             Toast.makeText(this, "QR Code gerado", Toast.LENGTH_SHORT).show();
         } catch (WriterException e) {
             Toast.makeText(this, "Erro ao gerar QR Code", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void conectarBluetooth() {
